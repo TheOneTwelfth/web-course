@@ -117,7 +117,12 @@
     min-width: 10%;
 }
 
-.weather__loader {
+.weather__primary__loader {
+    min-width: 100%;
+    text-align: center;
+}
+
+.weather__secondary__loader {
     text-align: center;
 }
 

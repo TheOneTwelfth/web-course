@@ -12,7 +12,7 @@
     <div class="header__wrap">
         <h1 class="header__here">Погода здесь</h1>
         <div class="header__update">
-            <button class="header__update__btn">Обновить геолокацию</button>
+            <button id="updateLocation" class="header__update__btn">Обновить геолокацию</button>
         </div>
         <div class="header__clearfix"></div>
     </div>
@@ -71,10 +71,35 @@
     <div class="weather__clearfix"></div>
 </template>
 
-
-<template id="weatherLoader">
-    <div class="weather__loader">
+<template id="weatherPrimaryTemplateLoader">
+    <div class="weather__primary__loader" name="container">
+        <img src="src/svg/update.svg" width="50rem" height="50rem">
         <h2>Загрузка данных...</h2>
+    </div>
+</template>
+
+<template id="weatherSecondaryTemplateLoader">
+    <div class="weather__container weather__secondary__loader" name="container">
+        <img src="src/svg/update.svg" width="50rem" height="50rem">
+        <h2>Загрузка данных...</h2>
+    </div>
+</template>
+
+<template id="weatherPrimaryTemplateError">
+    <div class="weather__primary__loader" name="container">
+        <img src="src/svg/error.svg" width="50rem" height="50rem">
+        <h2 name="error"></h2>
+    </div>
+</template>
+
+<template id="weatherSecondaryTemplateError">
+    <div class="weather__container weather__secondary__loader" name="container">
+        <div class="weather__secondary__header">
+            <h2 name="city"></h2>
+            <div class="weather__secondary__btn"><span>✕</span></div>
+        </div>
+        <img src="src/svg/error.svg" width="50rem" height="50rem">
+        <h2 name="error"></h2>
     </div>
 </template>
 

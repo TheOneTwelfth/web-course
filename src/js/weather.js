@@ -1,4 +1,4 @@
-import constructNodeId from './utils.js'
+import { constructNodeId } from './utils.js'
 import WeatherItem from './weather_item.js'
 
 
@@ -12,15 +12,21 @@ function commitWeatherLocations() {
 
 
 function initWeatherHere() {
+    let wrapNode = document.querySelector(".weather__primary__wrap");
+    wrapNode.textContent = "";
+    wrapNode.appendChild(getWeatherLoader());
     navigator.geolocation.getCurrentPosition(loadWeatherHere);
 }
 
 
 async function loadWeatherHere(location) {
     let coords = `${location.coords.latitude},${location.coords.longitude}`;
-    let primaryWeatherItem = new WeatherItem("#weatherPrimaryTemplate", coords);
-    let primaryWeather = await primaryWeatherItem.render();
-    document.querySelector(".weather__primary__wrap").appendChild(primaryWeather);
+    let primaryWeatherItem = new WeatherItem("#weatherPrimaryTemplate", coords, "_here");
+    let primaryWeather = primaryWeatherItem.build();
+
+    let wrapNode = document.querySelector(".weather__primary__wrap");
+    wrapNode.textContent = "";
+    wrapNode.appendChild(primaryWeather);
 }
 
 
@@ -32,9 +38,8 @@ async function addWeatherBookmark() {
         return;
     }
 
-    let newWeatherItem = new WeatherItem("#weatherSecondaryTemplate", bookmarkLocation);
-    await newWeatherItem.fetchWeather();
     let newWeatherNodeId = constructNodeId(bookmarkLocation);
+    let newWeatherItem = new WeatherItem("#weatherSecondaryTemplate", bookmarkLocation, newWeatherNodeId);
     secondaryWeatherItems.set(newWeatherNodeId, newWeatherItem);
 
     secondaryWeatherLocations.add(newWeatherNodeId);
@@ -44,13 +49,18 @@ async function addWeatherBookmark() {
 }
 
 
-function deleteWeatherBookmark() {
-    let weatherId = event.target.closest('div[name="container"]').id;
-    secondaryWeatherItems.delete(weatherId);
-    secondaryWeatherLocations.delete(weatherId);
+export function deleteWeatherBookmark(nodeId) {
+    secondaryWeatherItems.delete(nodeId);
+    secondaryWeatherLocations.delete(nodeId);
     commitWeatherLocations();
 
     rebuildSecondaryWeather();
+}
+
+
+function getWeatherLoader() {
+    let weatherTemplate = document.querySelector("#weatherPrimaryTemplateLoader").content; 
+    return document.importNode(weatherTemplate, true);
 }
 
 
@@ -64,7 +74,6 @@ function rebuildSecondaryWeather() {
     for (var [id, item] of secondaryWeatherItems) {
         i++;
         let node = item.build();
-        node.querySelector(".weather__secondary__btn").addEventListener("click", deleteWeatherBookmark);
         wrapNode.appendChild(node);
         if (i % 2) {
             let clearfixNode = document.importNode(clearfixTemplate, true);
@@ -77,7 +86,6 @@ function rebuildSecondaryWeather() {
 async function initWeatherBookmarks() {
     for (var weatherId of secondaryWeatherLocations) {
         let weatherBookmark = new WeatherItem("#weatherSecondaryTemplate", weatherId);
-        await weatherBookmark.fetchWeather();
         secondaryWeatherItems.set(weatherId, weatherBookmark);
     }
     rebuildSecondaryWeather();
@@ -96,3 +104,4 @@ async function initPage() {
 
 document.addEventListener("DOMContentLoaded", initPage);
 document.querySelector("#addBookmarkBtn").addEventListener("click", addWeatherBookmark);
+document.querySelector("#updateLocation").addEventListener("click", initWeatherHere);
