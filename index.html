@@ -8,35 +8,33 @@
     <link rel="stylesheet" href="./src/style/index.css">
 </head>
 <body>
-<div class="wrapper">
-    <div class="header__wrap">
-        <h1 class="header__here">Погода здесь</h1>
+    <header>
+        <h1>Погода здесь</h1>
         <div class="header__update">
             <button id="updateLocation" class="header__update__btn">Обновить геолокацию</button>
         </div>
         <div class="header__clearfix"></div>
-    </div>
-    <div class="weather__primary__wrap"></div>
+    </header>
+    <article class="weather__primary__wrap"></article>
     <div class="extra__bookmarks">
         <h1 class="extra__bookmarks__title">Избранное</h1>
-        <div class="extra__bookmarks__search">
+        <form class="extra__bookmarks__search">
             <input id="addBookmark" type="text" placeholder="Добавить новый город">
-            <div id="addBookmarkBtn"><span>+</span></div>
-        </div>
+            <button id="addBookmarkBtn" type="submit">+</div>
+        </form>
     </div>
-    <div class="weather__secondary__wrap"></div>
-</div>
+    <main></main>
 
 <template id="weatherPrimaryTemplate">
-    <div class="weather__container" name="container">
-        <h1 name="city"></h1>
+    <header class="weather__container" name="container">
+        <h2 name="city"></h2>
         <div class="weather__primary__meta">
             <img class="weather__primary__icon" name="icon" src="" alt="Иконка погоды">
             <span class="weather__primary__temp" name="temperature"></span>
         </div>
-    </div>
+    </header>
     <div class="weather__clearfix"></div>
-    <div class="weather__container">
+    <section class="weather__container">
         <ul class="weather__details">
             <li name="wind"><span>Ветер</span><span></span></li>
             <li name="clouds"><span>Облачность</span><span></span></li>
@@ -44,27 +42,29 @@
             <li name="humidity"><span>Влажность</span><span></span></li>
             <li name="coords"><span>Координаты</span><span></span></li>
         </ul>
-    </div>
+    </section>
 </template>
 
 <template id="weatherSecondaryTemplate">
-    <div class="weather__container" name="container">
-        <div class="weather__secondary__header">
-            <h2 name="city"></h2>
+    <article class="weather__container" name="container">
+        <header class="weather__secondary__header">
+            <h3 name="city"></h3>
             <div>
                 <span class="weather__secondary__temp" name="temperature"></span>
                 <img class="weather__secondary__icon" name="icon" src="" alt="Иконка погоды">
             </div>
             <div class="weather__secondary__btn"><span>✕</span></div>
-        </div>
-        <ul class="weather__details">
-            <li name="wind"><span>Ветер</span><span></span></li>
-            <li name="clouds"><span>Облачность</span><span></span></li>
-            <li name="pressure"><span>Давление</span><span></span></li>
-            <li name="humidity"><span>Влажность</span><span></span></li>
-            <li name="coords"><span>Координаты</span><span></span></li>
-        </ul>
-    </div>
+        </header>
+        <section>
+            <ul class="weather__details">
+                <li name="wind"><span>Ветер</span><span></span></li>
+                <li name="clouds"><span>Облачность</span><span></span></li>
+                <li name="pressure"><span>Давление</span><span></span></li>
+                <li name="humidity"><span>Влажность</span><span></span></li>
+                <li name="coords"><span>Координаты</span><span></span></li>
+            </ul>
+        </section>
+    </article>
 </template>
 
 <template id="weatherClearfix">
@@ -72,34 +72,34 @@
 </template>
 
 <template id="weatherPrimaryTemplateLoader">
-    <div class="weather__primary__loader" name="container">
+    <article class="weather__primary__loader" name="container">
         <img src="src/svg/update.svg" width="50rem" height="50rem">
-        <h2>Загрузка данных...</h2>
+        <h3>Загрузка данных...</h2>
     </div>
 </template>
 
 <template id="weatherSecondaryTemplateLoader">
-    <div class="weather__container weather__secondary__loader" name="container">
+    <article class="weather__container weather__secondary__loader" name="container">
         <img src="src/svg/update.svg" width="50rem" height="50rem">
-        <h2>Загрузка данных...</h2>
+        <h3>Загрузка данных...</h2>
     </div>
 </template>
 
 <template id="weatherPrimaryTemplateError">
-    <div class="weather__primary__loader" name="container">
+    <article class="weather__primary__loader" name="container">
         <img src="src/svg/error.svg" width="50rem" height="50rem">
-        <h2 name="error"></h2>
+        <h3 name="error"></h2>
     </div>
 </template>
 
 <template id="weatherSecondaryTemplateError">
-    <div class="weather__container weather__secondary__loader" name="container">
+    <article class="weather__container weather__secondary__loader" name="container">
         <div class="weather__secondary__header">
             <h2 name="city"></h2>
             <div class="weather__secondary__btn"><span>✕</span></div>
         </div>
         <img src="src/svg/error.svg" width="50rem" height="50rem">
-        <h2 name="error"></h2>
+        <h3 name="error"></h2>
     </div>
 </template>
 

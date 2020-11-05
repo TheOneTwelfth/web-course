@@ -3,6 +3,10 @@
     margin-bottom: 3.125rem;
 }
 
+.weather__primary__wrap h2 {
+    font-size: 2.5rem;
+}
+
 .weather__primary__meta {
     display: flex;
 }
@@ -24,7 +28,7 @@
     margin-right: 10%;
 }
 
-.weather__secondary__wrap {
+main {
     display: flex;
     flex-wrap: wrap;
 }
@@ -38,7 +42,7 @@
     margin: auto;
 }
 
-.weather__secondary__header h1 {
+article h3 {
     font-size: 1.75rem;
 }
 
@@ -111,10 +115,11 @@
 
 .weather__container {
     min-width: 45%;
+    display: block;
 }
 
 .weather__clearfix {
-    min-width: 10%;
+    min-width: 7%;
 }
 
 .weather__primary__loader {
@@ -126,7 +131,7 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 1099px) {
+@media only screen and (max-width: 760px) {
     .weather__primary__wrap {
         flex-direction: column;
     }

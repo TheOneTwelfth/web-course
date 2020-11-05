@@ -67,7 +67,7 @@ function getWeatherLoader() {
 function rebuildSecondaryWeather() {
     let clearfixTemplate = document.querySelector("#weatherClearfix").content;
 
-    let wrapNode = document.querySelector(".weather__secondary__wrap");
+    let wrapNode = document.querySelector("main");
     wrapNode.textContent = "";
 
     var i = 0;

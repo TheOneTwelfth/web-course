@@ -16,45 +16,44 @@
 
 
 .extra__bookmarks__search {
-    margin-right: 0;
+    margin-right: 3%;
     display: flex;
+    min-width: 25%;
 }
 
 .extra__bookmarks__search > input {
-    min-width: 18.75rem;
+    width: 100%;
+    box-sizing: border-box;
     background-color: #f1f1f1;
     border: none;
     outline: none;
     padding: 0.75rem 1rem;
     border-radius: 0.2rem;
     font-size: 0.8rem;
+    display: inline-block;
 }
 
-.extra__bookmarks__search > div {
+.extra__bookmarks__search > button {
     color: #ffffff;
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
+    margin: auto;
     margin-left: 0.75rem;
-}
-
-.extra__bookmarks__search > div > span {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 2rem;
+    border-radius: 50%;
     background: #6e7f87;
     min-width: 2rem;
     min-height: 2rem;
-    margin-top: 15%;
-    border-radius: 50%;
+    border: none;
     cursor: pointer;
 }
 
-@media only screen and (max-width: 1099px) {
+@media only screen and (max-width: 760px) {
     .extra__bookmarks {
         flex-direction: column;
     }
     .extra__bookmarks__search {
         margin: auto;
+        min-width: 100%;
     }
 }

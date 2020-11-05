@@ -47,7 +47,7 @@ export default class WeatherItem {
         weatherTemplate.querySelector('li[name="coords"] span:nth-child(2)').textContent = 
             `[${this.weatherData.location.lat}, ${this.weatherData.location.lon}]`;
 
-        weatherTemplate.querySelector('div[name="container"]').id = this.nodeId;
+        weatherTemplate.querySelector('*[name="container"]').id = this.nodeId;
 
         let clone = document.importNode(weatherTemplate, true);
         let close_btn = clone.querySelector(".weather__secondary__btn");
@@ -86,7 +86,7 @@ export default class WeatherItem {
 
         let rawNodeId = this.customId ? this.customId : this.location;
         this.nodeId = constructNodeId(rawNodeId);
-        weatherTemplate.querySelector('div[name="container"]').id = this.nodeId;
+        weatherTemplate.querySelector('*[name="container"]').id = this.nodeId;
 
         this.fetchWeather()
             .then(() => {
