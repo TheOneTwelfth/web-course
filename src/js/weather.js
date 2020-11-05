@@ -31,6 +31,7 @@ async function loadWeatherHere(location) {
 
 
 async function addWeatherBookmark() {
+    event.preventDefault();
     let bookmarkLocation = document.querySelector("#addBookmark").value;
 
     if (bookmarkLocation == "") {
@@ -67,7 +68,7 @@ function getWeatherLoader() {
 function rebuildSecondaryWeather() {
     let clearfixTemplate = document.querySelector("#weatherClearfix").content;
 
-    let wrapNode = document.querySelector("main");
+    let wrapNode = document.querySelector(".weather__secondary__wrap");
     wrapNode.textContent = "";
 
     var i = 0;
@@ -77,7 +78,7 @@ function rebuildSecondaryWeather() {
         wrapNode.appendChild(node);
         if (i % 2) {
             let clearfixNode = document.importNode(clearfixTemplate, true);
-            wrapNode.appendChild(clearfixNode);
+            //wrapNode.appendChild(clearfixNode);
         }
     }
 }

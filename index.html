@@ -15,15 +15,17 @@
         </div>
         <div class="header__clearfix"></div>
     </header>
-    <article class="weather__primary__wrap"></article>
-    <div class="extra__bookmarks">
-        <h1 class="extra__bookmarks__title">Избранное</h1>
-        <form class="extra__bookmarks__search">
-            <input id="addBookmark" type="text" placeholder="Добавить новый город">
-            <button id="addBookmarkBtn" type="submit">+</div>
-        </form>
-    </div>
-    <main></main>
+    <main>
+        <article class="weather__primary__wrap"></article>
+        <div class="extra__bookmarks">
+            <h2 class="extra__bookmarks__title">Избранное</h2>
+            <form class="extra__bookmarks__search">
+                <input id="addBookmark" type="text" placeholder="Добавить новый город">
+                <button id="addBookmarkBtn" type="submit">+</div>
+            </form>
+        </div>
+        <ul class="weather__secondary__wrap"></ul>
+    </main>
 
 <template id="weatherPrimaryTemplate">
     <header class="weather__container" name="container">
@@ -46,25 +48,27 @@
 </template>
 
 <template id="weatherSecondaryTemplate">
-    <article class="weather__container" name="container">
-        <header class="weather__secondary__header">
-            <h3 name="city"></h3>
-            <div>
-                <span class="weather__secondary__temp" name="temperature"></span>
-                <img class="weather__secondary__icon" name="icon" src="" alt="Иконка погоды">
-            </div>
-            <div class="weather__secondary__btn"><span>✕</span></div>
-        </header>
-        <section>
-            <ul class="weather__details">
-                <li name="wind"><span>Ветер</span><span></span></li>
-                <li name="clouds"><span>Облачность</span><span></span></li>
-                <li name="pressure"><span>Давление</span><span></span></li>
-                <li name="humidity"><span>Влажность</span><span></span></li>
-                <li name="coords"><span>Координаты</span><span></span></li>
-            </ul>
-        </section>
-    </article>
+    <li class="weather__container" name="container">
+        <article>
+            <header class="weather__secondary__header">
+                <h3 name="city"></h3>
+                <div>
+                    <span class="weather__secondary__temp" name="temperature"></span>
+                    <img class="weather__secondary__icon" name="icon" src="" alt="Иконка погоды">
+                </div>
+                <button class="weather__secondary__btn">⨉</div>
+            </header>
+            <section>
+                <ul class="weather__details">
+                    <li name="wind"><span>Ветер</span><span></span></li>
+                    <li name="clouds"><span>Облачность</span><span></span></li>
+                    <li name="pressure"><span>Давление</span><span></span></li>
+                    <li name="humidity"><span>Влажность</span><span></span></li>
+                    <li name="coords"><span>Координаты</span><span></span></li>
+                </ul>
+            </section>
+        </article>
+    </li>
 </template>
 
 <template id="weatherClearfix">
