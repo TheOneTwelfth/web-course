@@ -1,5 +1,5 @@
 function constructNodeId(src) {
-    return src.replace(" ", "");
+    return src.replace(" ", "").toLowerCase();
 }
 
 

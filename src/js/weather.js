@@ -2,6 +2,9 @@ import { constructNodeId } from './utils.js'
 import WeatherItem from './weather_item.js'
 
 
+const DEFAULT_CITY = "Oslo";
+
+
 var secondaryWeatherItems = new Map();
 var secondaryWeatherLocations = new Set();
 
@@ -15,12 +18,18 @@ function initWeatherHere() {
     let wrapNode = document.querySelector(".weather__primary__wrap");
     wrapNode.textContent = "";
     wrapNode.appendChild(getWeatherLoader());
-    navigator.geolocation.getCurrentPosition(loadWeatherHere);
+    navigator.geolocation.getCurrentPosition(loadWeatherHere, loadWeatherHereError);
 }
 
 
 async function loadWeatherHere(location) {
-    let coords = `${location.coords.latitude},${location.coords.longitude}`;
+    if (location instanceof GeolocationPosition) {
+        var coords = `${location.coords.latitude},${location.coords.longitude}`;
+    }
+    else {
+        var coords = location;
+    }
+
     let primaryWeatherItem = new WeatherItem("#weatherPrimaryTemplate", coords, "_here");
     let primaryWeather = primaryWeatherItem.build();
 
@@ -30,9 +39,28 @@ async function loadWeatherHere(location) {
 }
 
 
+async function loadWeatherHereError(error) {
+    if (error.code == 1) {
+        await loadWeatherHere(DEFAULT_CITY);
+        return;
+    }
+
+    let errorTemplate = document.querySelector("#weatherPrimaryTemplateError").content;
+    errorTemplate.querySelector('h3[name="error"]').textContent = error.message;
+    let clone = document.importNode(errorTemplate, true);
+
+    let parentNode = document.querySelector(".weather__primary__wrap");
+    parentNode.textContent = "";
+    parentNode.appendChild(clone);
+}
+
+
 async function addWeatherBookmark() {
     event.preventDefault();
-    let bookmarkLocation = document.querySelector("#addBookmark").value;
+
+    let bookmarkInput = document.querySelector("#addBookmark");
+    let bookmarkLocation = bookmarkInput.value;
+    bookmarkInput.value = "";
 
     if (bookmarkLocation == "") {
         window.alert("Укажите местоположение!");
@@ -40,6 +68,11 @@ async function addWeatherBookmark() {
     }
 
     let newWeatherNodeId = constructNodeId(bookmarkLocation);
+    if (secondaryWeatherLocations.has(newWeatherNodeId)) {
+        alert(`${newWeatherNodeId} already exists!`);
+        return;
+    }
+
     let newWeatherItem = new WeatherItem("#weatherSecondaryTemplate", bookmarkLocation, newWeatherNodeId);
     secondaryWeatherItems.set(newWeatherNodeId, newWeatherItem);
 
@@ -60,7 +93,7 @@ export function deleteWeatherBookmark(nodeId) {
 
 
 function getWeatherLoader() {
-    let weatherTemplate = document.querySelector("#weatherPrimaryTemplateLoader").content; 
+    let weatherTemplate = document.querySelector("#weatherPrimaryTemplateLoader").content;
     return document.importNode(weatherTemplate, true);
 }
 
@@ -71,15 +104,9 @@ function rebuildSecondaryWeather() {
     let wrapNode = document.querySelector(".weather__secondary__wrap");
     wrapNode.textContent = "";
 
-    var i = 0;
     for (var [id, item] of secondaryWeatherItems) {
-        i++;
         let node = item.build();
         wrapNode.appendChild(node);
-        if (i % 2) {
-            let clearfixNode = document.importNode(clearfixTemplate, true);
-            //wrapNode.appendChild(clearfixNode);
-        }
     }
 }
 

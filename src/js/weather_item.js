@@ -12,7 +12,14 @@ export default class WeatherItem {
     }
 
     async fetchWeather() {
-        let resp = await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${this.location}`);
+        try {
+            var resp = await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${this.location}`);
+        } catch (e) {
+            if (!(e instanceof TypeError)) {
+                throw e;
+            }
+            throw new WeatherError(e.message);
+        }
 
         switch(resp.status) {
             case 200:
@@ -67,7 +74,7 @@ export default class WeatherItem {
         try {
         errorTemplate.querySelector('*[name="city"]').textContent = this.location;
         } catch (e) {}
-        errorTemplate.querySelector('h2[name="error"]').textContent = errorMessage;
+        errorTemplate.querySelector('h3[name="error"]').textContent = errorMessage;
 
         let clone = document.importNode(errorTemplate, true);
         let close_btn = clone.querySelector(".weather__secondary__btn");
