@@ -19,8 +19,8 @@
         <article class="weather__primary__wrap"></article>
         <div class="extra__bookmarks">
             <h2 class="extra__bookmarks__title">Избранное</h2>
-            <form class="extra__bookmarks__search">
-                <input id="addBookmark" type="text" placeholder="Добавить новый город">
+            <form id="addBookmarkForm" class="extra__bookmarks__search">
+                <input id="addBookmark" type="text" placeholder="Добавить новый город" name="bookmarkLocation">
                 <button id="addBookmarkBtn" type="submit">+</div>
             </form>
         </div>
@@ -83,10 +83,12 @@
 </template>
 
 <template id="weatherSecondaryTemplateLoader">
-    <article class="weather__container weather__secondary__loader" name="container">
-        <img src="src/svg/update.svg" width="50rem" height="50rem">
-        <h3>Загрузка данных...</h2>
-    </div>
+    <li class="weather__container weather__secondary__loader" name="container">
+        <article>
+            <img src="src/svg/update.svg" width="50rem" height="50rem">
+            <h3>Загрузка данных...</h2>
+        </article>
+    </li>
 </template>
 
 <template id="weatherPrimaryTemplateError">
@@ -97,14 +99,14 @@
 </template>
 
 <template id="weatherSecondaryTemplateError">
-    <article class="weather__container weather__secondary__loader" name="container">
-        <div class="weather__secondary__header">
+    <li class="weather__container weather__secondary__loader" name="container">
+        <header class="weather__secondary__header">
             <h2 name="city"></h2>
-            <div class="weather__secondary__btn"><span>✕</span></div>
-        </div>
+            <button class="weather__secondary__btn">⨉</div>
+        </header>
         <img src="src/svg/error.svg" width="50rem" height="50rem">
         <h3 name="error"></h2>
-    </div>
+    </li>
 </template>
 
 <script type="module" src="src/js/weather.js"></script>

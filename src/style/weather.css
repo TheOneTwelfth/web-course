@@ -83,6 +83,7 @@ article h3 {
     text-align: center;
     vertical-align: middle;
     display: inline-block;
+    margin: 0 auto;
     margin-right: 0 !important;
     border-radius: 50%;
     background: #6e7f87;

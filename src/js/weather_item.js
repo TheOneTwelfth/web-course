@@ -98,14 +98,14 @@ export default class WeatherItem {
         this.fetchWeather()
             .then(() => {
                 let newNode = this.fillNode();
-                let oldNode = document.querySelector(`#${this.nodeId}`);
+                let oldNode = document.querySelector(`[id='${this.nodeId}']`);
                 oldNode.parentNode.replaceChild(newNode, oldNode);
             })
             .catch((e) => {
                 console.log(e);
                 if (e instanceof WeatherError) {
                     let newNode = this.fillNodeError(e.message);
-                    let oldNode = document.querySelector(`#${this.nodeId}`);
+                    let oldNode = document.querySelector(`[id='${this.nodeId}']`);
                     oldNode.parentNode.replaceChild(newNode, oldNode);
                 }
                 else {

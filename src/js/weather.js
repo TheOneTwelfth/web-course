@@ -58,7 +58,7 @@ async function loadWeatherHereError(error) {
 async function addWeatherBookmark() {
     event.preventDefault();
 
-    let bookmarkInput = document.querySelector("#addBookmark");
+    let bookmarkInput = event.target.elements.bookmarkLocation;
     let bookmarkLocation = bookmarkInput.value;
     bookmarkInput.value = "";
 
@@ -99,8 +99,6 @@ function getWeatherLoader() {
 
 
 function rebuildSecondaryWeather() {
-    let clearfixTemplate = document.querySelector("#weatherClearfix").content;
-
     let wrapNode = document.querySelector(".weather__secondary__wrap");
     wrapNode.textContent = "";
 
@@ -131,5 +129,5 @@ async function initPage() {
 
 
 document.addEventListener("DOMContentLoaded", initPage);
-document.querySelector("#addBookmarkBtn").addEventListener("click", addWeatherBookmark);
+document.querySelector("#addBookmarkForm").addEventListener("submit", addWeatherBookmark);
 document.querySelector("#updateLocation").addEventListener("click", initWeatherHere);
