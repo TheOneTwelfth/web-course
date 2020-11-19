@@ -1,1 +1,7 @@
-https://theonetwelfth.github.io/web-course/
+# Web Course  
+
+## Установка и запуск
+```bash
+npm install
+npm start
+```
