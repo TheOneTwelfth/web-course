@@ -1,19 +1,25 @@
 import { constructNodeId, WeatherError } from './utils.js'
-import WEATHER_API_KEY from './settings.js'
+import BACKEND_URL from './settings.js'
 
 
 export default class WeatherItem {
-    constructor(templateId, location, customId = null) {
+    constructor(templateId, location, customId = null, fetchCoords = false) {
         this.templateId = templateId;
         this.location = location;
         this.customId = customId;
+        this.fetchCoords = fetchCoords;
 
         this.weatherData = null;
     }
 
     async fetchWeather() {
         try {
-            var resp = await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${this.location}`);
+            if (this.fetchCoords) {
+                var resp = await fetch(`${BACKEND_URL}/weather/coordinates?lat=${this.location.lat}&long=${this.location.long}`);
+            }
+            else {
+                var resp = await fetch(`${BACKEND_URL}/weather/city?q=${this.location}`);
+            }
         } catch (e) {
             if (!(e instanceof TypeError)) {
                 throw e;
@@ -21,15 +27,12 @@ export default class WeatherItem {
             throw new WeatherError(e.message);
         }
 
-        switch(resp.status) {
-            case 200:
-                this.weatherData = await resp.json();
-                return true;
-            case 400:
-                throw new WeatherError(`Invalid location: ${this.location}!`);
-            default:
-                throw new WeatherError("API error occured!");
+        if (resp.status == 200) {
+            this.weatherData = await resp.json();
+            return true;
         }
+
+        throw new WeatherError(await resp.text());
     }
 
     build() {
@@ -39,20 +42,15 @@ export default class WeatherItem {
     fillNode() {
         let weatherTemplate = document.querySelector(this.templateId).content;
 
-        weatherTemplate.querySelector('*[name="city"]').textContent = this.weatherData.location.name;
-        weatherTemplate.querySelector('img[name="icon"]').src = 
-        `https://${this.weatherData.current.condition.icon.replace("64x64", "128x128")}`;
-        weatherTemplate.querySelector('span[name="temperature"]').textContent = `${this.weatherData.current.temp_c}°C`;
+        weatherTemplate.querySelector('*[name="city"]').textContent = this.weatherData.name;
+        weatherTemplate.querySelector('img[name="icon"]').src = this.weatherData.icon;
+        weatherTemplate.querySelector('span[name="temperature"]').textContent = this.weatherData.temperature;
 
-        weatherTemplate.querySelector('li[name="wind"] span:nth-child(2)').textContent = 
-            `${this.weatherData.current.wind_kph} kph ${this.weatherData.current.wind_dir}`;
-        weatherTemplate.querySelector('li[name="clouds"] span:nth-child(2)').textContent = this.weatherData.current.condition.text;
-        weatherTemplate.querySelector('li[name="pressure"] span:nth-child(2)').textContent = 
-            `${this.weatherData.current.pressure_mb} mb`;
-        weatherTemplate.querySelector('li[name="humidity"] span:nth-child(2)').textContent = 
-            `${this.weatherData.current.humidity}%`;
-        weatherTemplate.querySelector('li[name="coords"] span:nth-child(2)').textContent = 
-            `[${this.weatherData.location.lat}, ${this.weatherData.location.lon}]`;
+        weatherTemplate.querySelector('li[name="wind"] span:nth-child(2)').textContent = this.weatherData.details.wind;
+        weatherTemplate.querySelector('li[name="clouds"] span:nth-child(2)').textContent = this.weatherData.details.clouds;
+        weatherTemplate.querySelector('li[name="pressure"] span:nth-child(2)').textContent = this.weatherData.details.pressure;
+        weatherTemplate.querySelector('li[name="humidity"] span:nth-child(2)').textContent = this.weatherData.details.humidity;
+        weatherTemplate.querySelector('li[name="coords"] span:nth-child(2)').textContent = this.weatherData.details.coords;
 
         weatherTemplate.querySelector('*[name="container"]').id = this.nodeId;
 

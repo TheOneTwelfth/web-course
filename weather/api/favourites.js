@@ -14,14 +14,14 @@ app.server.get('/favourites', (_req, res) => {
 });
 
 app.server.post('/favourites', (req, res) => {
-    if (!req.body.bookmarkLocation) {
+    if (!req.body.name) {
         res.status(400).send("Please specify bookmark name");
         return;
     }
 
     let stmt = app.db.prepare('INSERT INTO favourites VALUES (?)');
 
-    stmt.run(req.body.bookmarkLocation, (err) => {
+    stmt.run(req.body.name, (err) => {
         if (err) {
             if (err.code != 'SQLITE_CONSTRAINT') {
                 console.error(err);

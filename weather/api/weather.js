@@ -8,7 +8,7 @@ function parseWeatherData(data) {
     return {
         'name': data.location.name,
         'icon': `https:${data.current.condition.icon.replace("64x64", "128x128")}`,
-        'temperature': data.current.temp_c,
+        'temperature': `${data.current.temp_c}°C`,
         'details': {
             'wind': `${data.current.wind_kph} kph ${data.current.wind_dir}`,
             'clouds': data.current.condition.text,

@@ -7,9 +7,7 @@ var settings = require('./settings');
 
 var server = express();
 server.use(express.static('./public'));
-
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
+server.use(express.json());
 
 var db = new sqlite3.Database(settings.DB_SOURCE, (err) => {
     if (err) {

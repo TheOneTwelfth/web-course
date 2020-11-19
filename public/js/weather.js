@@ -1,5 +1,6 @@
 import { constructNodeId } from './utils.js'
 import WeatherItem from './weather_item.js'
+import BACKEND_URL from './settings.js'
 
 
 const DEFAULT_CITY = "Oslo";
@@ -7,11 +8,6 @@ const DEFAULT_CITY = "Oslo";
 
 var secondaryWeatherItems = new Map();
 var secondaryWeatherLocations = new Set();
-
-
-function commitWeatherLocations() {
-    localStorage.setItem("secondaryWeatherLocations", JSON.stringify(Array.from(secondaryWeatherLocations)));
-}
 
 
 function initWeatherHere() {
@@ -24,13 +20,18 @@ function initWeatherHere() {
 
 async function loadWeatherHere(location) {
     if (location instanceof GeolocationPosition) {
-        var coords = `${location.coords.latitude},${location.coords.longitude}`;
+        var coords = {
+            'lat': location.coords.latitude,
+            'long': location.coords.longitude
+        };
+        var fetchCoords = true;
     }
     else {
         var coords = location;
+        var fetchCoords = false;
     }
 
-    let primaryWeatherItem = new WeatherItem("#weatherPrimaryTemplate", coords, "_here");
+    let primaryWeatherItem = new WeatherItem("#weatherPrimaryTemplate", coords, "_here", fetchCoords);
     let primaryWeather = primaryWeatherItem.build();
 
     let wrapNode = document.querySelector(".weather__primary__wrap");
@@ -77,7 +78,16 @@ async function addWeatherBookmark() {
     secondaryWeatherItems.set(newWeatherNodeId, newWeatherItem);
 
     secondaryWeatherLocations.add(newWeatherNodeId);
-    commitWeatherLocations();
+    await fetch(
+        `${BACKEND_URL}/favourites`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'name': newWeatherNodeId})
+        }
+    )
 
     rebuildSecondaryWeather();
 }
@@ -86,7 +96,9 @@ async function addWeatherBookmark() {
 export function deleteWeatherBookmark(nodeId) {
     secondaryWeatherItems.delete(nodeId);
     secondaryWeatherLocations.delete(nodeId);
-    commitWeatherLocations();
+
+    fetch(`${BACKEND_URL}/favourites?name=${nodeId}`, {method: 'DELETE'})
+        .then(() => {});
 
     rebuildSecondaryWeather();
 }
@@ -119,10 +131,10 @@ async function initWeatherBookmarks() {
 
 
 async function initPage() {
-    let localStorageLocations = localStorage.getItem("secondaryWeatherLocations");
-    if (localStorageLocations != null) {
-        secondaryWeatherLocations = new Set(JSON.parse(localStorageLocations));
-    }
+    let favouritesResp = await fetch(`${BACKEND_URL}/favourites`);
+    let secondaryWeatherLocationsList = await favouritesResp.json();
+    secondaryWeatherLocations = new Set(secondaryWeatherLocationsList.map(({ name }) => name));
+
     initWeatherHere();
     await initWeatherBookmarks();
 }

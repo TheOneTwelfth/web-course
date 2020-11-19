@@ -1,3 +1,3 @@
-const WEATHER_API_KEY = "92d85540e7744b689b5184811200810";
+const BACKEND_URL = "http://localhost:3000";
 
-export default WEATHER_API_KEY;
+export default BACKEND_URL;
