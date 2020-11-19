@@ -1,10 +1,29 @@
+var bodyParser = require('body-parser');
 var express = require('express');
-var app = express();
+var sqlite3 = require('sqlite3');
 
-var sqlite = require('sqlite3');
-var db = new sqlite.Database('./db.sqlite');
+var settings = require('./settings');
 
-app.use(express.static('./public'));
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+
+var server = express();
+server.use(express.static('./public'));
+
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+
+var db = new sqlite3.Database(settings.DB_SOURCE, (err) => {
+    if (err) {
+        console.error(err.message);
+        throw err;
+    }
+
+    console.log(`Established SQLite connection to ${settings.DB_SOURCE}`);
+    db.run(`
+        CREATE TABLE IF NOT EXISTS favourites(
+            name TEXT PRIMARY KEY
+        );
+    `);
 });
+
+exports.db = db;
+exports.server = server;

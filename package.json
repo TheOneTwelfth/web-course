@@ -4,7 +4,7 @@
   "description": "Web Course",
   "main": "index.js",
   "scripts": {
-    "start": "node ./weather/app.js"
+    "start": "node ./weather/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/TheOneTwelfth/web-course#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "request": "^2.88.2",
     "sqlite3": "^5.0.0"
   }
 }
