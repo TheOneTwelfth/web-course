@@ -43,7 +43,7 @@ header > h1 {
     }
 
     .header__update__btn {
-        background-image: url("../svg/update.svg");
+        background-image: url("../assets/update.svg");
         background-repeat: no-repeat;
         background-size: contain;
         padding: 0;

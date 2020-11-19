@@ -1,0 +1,23 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "Web Course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./weather/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheOneTwelfth/web-course.git"
+  },
+  "author": "Viktor Kniazev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheOneTwelfth/web-course/issues"
+  },
+  "homepage": "https://github.com/TheOneTwelfth/web-course#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.0"
+  }
+}
