@@ -5,7 +5,7 @@ app.server.get('/favourites', (_req, res) => {
     app.db.all('SELECT name FROM favourites', (err, rows) => {
         if (err) {
             console.error(err.message);
-            res.status(500);
+            res.status(500).send("Database error");
             return;
         }
 
@@ -25,7 +25,7 @@ app.server.post('/favourites', (req, res) => {
         if (err) {
             if (err.code != 'SQLITE_CONSTRAINT') {
                 console.error(err);
-                res.status(500);
+                res.status(500).send("Database error");
                 return;
             }
 
@@ -48,7 +48,7 @@ app.server.delete('/favourites', (req, res) => {
     stmt.run(req.query.name, (err) => {
         if (err) {
             console.error(err);
-            res.status(500);
+            res.status(500).send("Database error");
             return;
         }
 
