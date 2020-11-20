@@ -22,7 +22,7 @@ function parseWeatherData(data) {
 
 function fetchWeatherData(query, res) {
     request.get(
-        `https://api.weatherapi.com/v1/current.json?key=${settings.WEATHER_API_KEY}&q=${query}`,
+        encodeURI(`https://api.weatherapi.com/v1/current.json?key=${settings.WEATHER_API_KEY}&q=${query}`),
         { json: true },
         (apiErr, apiResp, apiRespBody) => {
             if (apiErr) {
