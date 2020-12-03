@@ -4,7 +4,8 @@
   "description": "Web Course",
   "main": "index.js",
   "scripts": {
-    "start": "node ./weather/index.js"
+    "start": "node ./weather/index.js",
+    "test": "mocha --recursive -r esm"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,13 @@
     "express": "^4.17.1",
     "request": "^2.88.2",
     "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "esm": "^3.2.25",
+    "mocha": "^8.2.1",
+    "rewire": "^5.0.0",
+    "sinon": "^9.2.1"
   }
 }
