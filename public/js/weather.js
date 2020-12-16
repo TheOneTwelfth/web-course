@@ -70,7 +70,7 @@ async function addWeatherBookmark() {
 
     let newWeatherNodeId = constructNodeId(bookmarkLocation);
     if (secondaryWeatherLocations.has(newWeatherNodeId)) {
-        alert(`${newWeatherNodeId} already exists!`);
+        window.alert(`${newWeatherNodeId} already exists!`);
         return;
     }
 
@@ -93,7 +93,7 @@ async function addWeatherBookmark() {
 }
 
 
-export function deleteWeatherBookmark(nodeId) {
+function deleteWeatherBookmark(nodeId) {
     secondaryWeatherItems.delete(nodeId);
     secondaryWeatherLocations.delete(nodeId);
 
@@ -121,7 +121,7 @@ function rebuildSecondaryWeather() {
 }
 
 
-async function initWeatherBookmarks() {
+function initWeatherBookmarks() {
     for (var weatherId of secondaryWeatherLocations) {
         let weatherBookmark = new WeatherItem("#weatherSecondaryTemplate", weatherId);
         secondaryWeatherItems.set(weatherId, weatherBookmark);
@@ -136,10 +136,25 @@ async function initPage() {
     secondaryWeatherLocations = new Set(secondaryWeatherLocationsList.map(({ name }) => name));
 
     initWeatherHere();
-    await initWeatherBookmarks();
+    initWeatherBookmarks();
 }
 
 
 document.addEventListener("DOMContentLoaded", initPage);
 document.querySelector("#addBookmarkForm").addEventListener("submit", addWeatherBookmark);
 document.querySelector("#updateLocation").addEventListener("click", initWeatherHere);
+
+
+export {
+    secondaryWeatherLocations,
+    secondaryWeatherItems,
+    initWeatherHere,
+    loadWeatherHere, 
+    loadWeatherHereError, 
+    addWeatherBookmark, 
+    deleteWeatherBookmark, 
+    getWeatherLoader, 
+    rebuildSecondaryWeather, 
+    initWeatherBookmarks,
+    initPage
+}

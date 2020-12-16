@@ -70,8 +70,9 @@ export default class WeatherItem {
         let errorTemplate = document.querySelector(`${this.templateId}Error`).content;
 
         try {
-        errorTemplate.querySelector('*[name="city"]').textContent = this.location;
+            errorTemplate.querySelector('*[name="city"]').textContent = this.location;
         } catch (e) {}
+        
         errorTemplate.querySelector('h3[name="error"]').textContent = errorMessage;
 
         let clone = document.importNode(errorTemplate, true);

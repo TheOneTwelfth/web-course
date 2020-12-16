@@ -1,6 +1,5 @@
 function constructNodeId(src) {
-    console.log(src);
-    return src.replace(" ", "").toLowerCase();
+    return src.replaceAll(" ", "").toLowerCase();
 }
 
 
