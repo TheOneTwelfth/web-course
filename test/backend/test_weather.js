@@ -1,22 +1,31 @@
 var app = require('../../weather/app');
+var settings = require('../../weather/settings');
 require('../../weather/api/weather');
 
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var fs = require('fs');
 var path = require('path');
+var request = require('request');
 var rewire = require('rewire');
+var sinon = require('sinon');
 
 var weatherModule = rewire('../../weather/api/weather');
 var parseWeatherData = weatherModule.__get__('parseWeatherData');
 
 
 chai.use(chaiHttp);
+settings.WEATHER_API_KEY = 'testkey';
+
+const weatherData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/raw_weather_data.json')));
 
 describe('Weather API', () => {
+    beforeEach(() => {
+        this.getStub = sinon.stub(request, 'get');
+    });
+
     describe('Parse Weather Data', () => {
         it('should correctly parse weather data', () => {
-            let weatherData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/raw_weather_data.json')));
             let parsedData = parseWeatherData(weatherData);
 
             chai.expect(parsedData.name).to.be.equal('Moscow');
@@ -33,6 +42,12 @@ describe('Weather API', () => {
 
     describe('GET /weather/city', () => {
         it('should fetch correct weather data', async () => {
+            this.getStub.yields(
+                null,
+                { statusCode: 200, headers: { 'content-type': 'application/json' } },
+                weatherData
+            );
+
             let res = await chai
                 .request(app.server)
                 .get('/weather/city?q=Moscow');
@@ -51,6 +66,11 @@ describe('Weather API', () => {
         });
 
         it('should fetch weather data with invalid location and get 404', async () => {
+            this.getStub.yields(
+                null,
+                { statusCode: 400 },
+            );
+
             let res = await chai
                 .request(app.server)
                 .get('/weather/city?q=fkgmsgksreptjpitj');
@@ -62,12 +82,18 @@ describe('Weather API', () => {
 
     describe('GET /weather/coordinates', () => {
         it('should fetch correct weather data by coords', async () => {
+            this.getStub.yields(
+                null,
+                { statusCode: 200, headers: { 'content-type': 'application/json' } },
+                weatherData
+            );
+
             let res = await chai
                 .request(app.server)
                 .get('/weather/coordinates?lat=55.75&long=37.62');
             
             chai.expect(res.status).to.equal(200);
-            chai.expect(res.body.name).to.equal('Moscou');
+            chai.expect(res.body.name).to.equal('Moscow');
         });
 
         it('should fetch weather data without coords and get 400', async () => {
@@ -92,14 +118,9 @@ describe('Weather API', () => {
             chai.expect(res.status).to.equal(400);
             chai.expect(res.text).to.equal("Please specify both latitude and longitude");
         });
+    });
 
-        it('should fetch weather data with invalid coords and get default location', async () => {
-            let res = await chai
-                .request(app.server)
-                .get('/weather/coordinates?lat=10000&long=50000');
-
-            chai.expect(res.status).to.equal(200);
-            chai.expect(res.body.name).to.equal('New York City');
-        });
+    afterEach(() => {
+        sinon.restore();
     });
 });
